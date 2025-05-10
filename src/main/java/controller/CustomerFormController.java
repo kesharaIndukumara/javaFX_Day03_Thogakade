@@ -1,5 +1,6 @@
 package controller;
 
+import db.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -54,6 +55,8 @@ public class CustomerFormController {
     @FXML
     private TextField txtSalary;
 
+    List<Customer> customerList = new ArrayList<>();
+
     @FXML
     void btnAddOnAction(ActionEvent event) {
 
@@ -81,10 +84,8 @@ public class CustomerFormController {
 
     private void loadTable(){
         try {
-            Connection connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/thoga_kade","root","1234");
+            Connection connection = DBConnection.getInstance().getConnection();
             ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM customer");
-
-            List<Customer> customerList = new ArrayList<>();
 
             while(resultSet.next()) {
                 customerList.add(new Customer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getDouble(4)));
